@@ -16,15 +16,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 	If (!conn) die('Problem connecting to the db.');
 
 	query(
-				"INSERT INTO tasks(type_id, task, pomodoros) VALUES(:type, :task, :pomodoros)",
-				array('type' => $type_id, 'task' => $task, 'pomodoros' => $pomodoros),
-				$conn
+			"INSERT INTO tasks(type_id, task, pomodoros) VALUES(:type, :task, :pomodoros)",
+			array('type' => $type_id, 'task' => $task, 'pomodoros' => $pomodoros),
+			$conn
 		);
 
+	$id = $conn->lastInsertId();
+	$data['inserted_row'] = get_by_id($id, $conn);
 	$data['status'] = "Задача успешно добавлена в базу данных!";
-	$data['id'] = $conn->lastInsertId();
+	$data['id'] = $id;
 
-	// echo implode("; ", $data);
 	echo json_encode($data);
 }
 

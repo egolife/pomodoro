@@ -3,7 +3,7 @@
 
 <section class="container l-main">
 
-<h1>Составление плана на сегодня <?php echo date('d-m-Y'); ?></h1>
+	<h1>Составление плана на сегодня <?php echo date('d-m-Y'); ?></h1>
 
 	<p class="small">
 		<label><input type="checkbox" id="archive_tasks" <?= $archive ? "checked" : null ?> > Показать невыполненные задачи из архива</label>
@@ -41,14 +41,14 @@
 						<td class="text-center">&nbsp;</td>
 					</tr>
 				</form>
-				
+
 				<form action="create_today_plan.php" role="form" id="selectionForm" method="post">
 					<?php foreach($tasks as $task) : ?>
 						<tr <?= "data-taskid='".$task['id']."'" ?>>
 							<td>
 								<?php echo $task['name'] . "&nbsp;" ?>
 								<?= $task['is_freezed'] ? "<span class='label label-info'>FREEZED</span>" : null ?>
-								
+
 							</td>
 							<td><?php echo $task['task']; ?></td>
 							<td><?php echo $task['pomodoros']; ?></td>
@@ -63,26 +63,18 @@
 						</tr>
 					<?php endforeach; ?>
 				</form>
-					<tr>
-						<td colspan="5" class="text-center">
-							<button type="submit" form="selectionForm" class="btn btn-primary btn-lg">Составить план</button>
-						</td>
-					</tr>
+
+				<tr>
+					<td colspan="5" class="text-center">
+						<button type="submit" form="selectionForm" class="btn btn-primary btn-lg">
+							Составить план
+						</button>
+					</td>
+				</tr>
 
 			</tbody>
 		</table>
 	</div>
-
 </section>
 
-
-
 <?php require '/inc/footer.php'; ?>
-
-
-
-
-
-
-
-

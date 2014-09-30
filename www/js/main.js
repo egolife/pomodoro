@@ -4,6 +4,22 @@
 * ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
+
+function generate_new_row(obj){
+
+	var str = "<tr " + "data-taskid='" + obj.id + "'>";
+	str += "<td>" + obj.name + "&nbsp;</td>";
+	str += "<td>" + obj.task + "</td>";
+	str += "<td>" + obj.pomodoros + "</td>";
+	str += "<td class='text-center'>" + "<input type='checkbox' checked value='" + obj.id + "' form='selectionForm' id='task";
+	str += obj.id + "' name='task" + obj.id + "'>" + "</td>";
+	str += "<td class='text-center'>" + "<a class='freeze_toggle' href='#'>freeze</a>" + "</td>";
+	str += "</tr>";
+
+	return $(str);
+}
+
+
 var onEvent = {
 
 	/*  отправляет на сервер запрос на добавление задания в общий список */
@@ -27,18 +43,9 @@ var onEvent = {
 				$(this).remove();
 			});
 
-
-
-			var tmp = "";
-			tmp += "<tr>";
-			tmp += "<td>" + $("#typeInput").find("option[value='"+$("#typeInput").val()+"']").text() + "</td>";
-			tmp += "<td>" + $("#activityInput").val() + "</td>";
-			tmp += "<td>" + $("#estimateInput").val() + "</td>";
-			tmp += "<td class='text-center'><input type='checkbox' checked value='" + data.id + "' form='selectionForm' id='task";
-			tmp += data.id +"' name='task" + data.id + "'></td>";
-			tmp += "</tr>";
-			$("#newNode").before(tmp);
-
+			var newTask = generate_new_row(data.inserted_row[0]);
+			$("#newNode").next("tr").after(newTask);
+			
 		});	
 	},
 	/* Оправляет на сервер список дел для составления плана на сегодня (сейчас на стр planning.php) */
@@ -146,7 +153,7 @@ var onEvent = {
 
 		var confirmed = confirm("Подтвердите отправку задачи в архив / восстановление из архива");
 		if(!confirmed) return;
-		
+
 		var el = $(this);
 		var task_id = el.closest("tr").data("taskid");
 

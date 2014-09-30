@@ -127,7 +127,7 @@ function get_uncomplete($tableName1, $tableName2, $conn, $null_column, $freezed)
 }
 
 function get_id($task, $conn){
-	$query = query('select id from  tasks where task=:task limit 1',
+	$query = query('select id from tasks where task=:task limit 1',
 				array('task' => $task),
 				$conn);
 
@@ -135,11 +135,11 @@ function get_id($task, $conn){
 }
 
 function get_by_id($id, $conn){
-	$query = query('select * from posts where id=:id limit 1',
-				array('id' => $_GET['id']),
+	$query = query('select name, t.id, type_id, task, pomodoros, is_freezed from tasks t inner join activity_type a on t.type_id=a.id where t.id=:id limit 1',
+				array('id' => $id),
 				$conn);
 
-	if ($query) return $query->fetchAll();
+	if ($query) return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function get_rows_by_id($id, $conn){
