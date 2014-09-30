@@ -1,0 +1,33 @@
+/**
+* ---------------------------------------------------------------------------------------------------------------------------------------
+* Table styles
+* ---------------------------------------------------------------------------------------------------------------------------------------
+*/
+table{
+	input[type=checkbox]{
+		width: 20px;
+		height: 20px;
+	}
+	&#records tr.success{
+		td{
+			background-color: darken(#dff0d8, 20%);
+		}
+	}
+	button.disabled{
+		color: #000;
+		font-weight: bold;
+	}
+}
+
+#records{
+	td{
+		vertical-align: middle;
+	}
+	.estimateCell{
+		font-weight: bold;
+	}
+	.addPomodoro{
+		font-size: 200%;
+		font-weight: bold;
+	}
+}

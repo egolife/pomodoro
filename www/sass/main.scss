@@ -1,0 +1,52 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/main.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass";
+
+/**
+* ---------------------------------------------------------------------------------------------------------------------------------------
+* Генерируем и подключаем спрайт-карту
+* ---------------------------------------------------------------------------------------------------------------------------------------
+*/
+// $sprites: sprite-map("sprites/*.png", $layout:smart);
+// i{
+// 	background: $sprites;
+// 	display: inline-block;
+// }
+// @each $i in sprite_names($sprites) {
+// 	.i_#{$i} {
+// 		background-position: sprite-position($sprites, $i);
+// 		@include sprite-dimensions($sprites, $i);
+// 	}
+// }
+
+@import "utilities/settings";
+@import "utilities/utilities";
+
+/* Bootstrap files */
+@import "bootstrap/bootstrap";
+// @import "bootstrap/bootstrap-theme";
+
+/* If bootstap is included - no need to use normalize, cause its already in bootstrap */
+// @import "base/normalize";
+
+@import "base/base";
+@import "base/ie8";
+
+/* Fonts */
+// @import 'fonts/font-name';
+
+@import "layout/nav";
+@import "layout/header";
+@import "layout/main";
+@import "layout/footer";
+
+@import "modules/btn";
+@import "modules/dividers";
+@import "modules/forms";
+@import "modules/tables";
+@import "modules/misc";
+
+@import "theme/theme";
