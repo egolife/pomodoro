@@ -48,3 +48,20 @@ if($_POST['unfreeze_task']){
 	if(unfreeze_task($conn, $id)) return;
 	else echo "Произошла непредвиденная ошибка!";
 }
+
+if($_POST['delete_task']){
+	$id = htmlentities($_POST['delete_task']);
+
+	if(delete_tasks($conn, $id)) return;
+	else echo "Произошла непредвиденная ошибка!";
+}
+
+if($_POST['update_task']){
+	$id = (int)$_POST['update_task'];
+	$text = htmlentities_ru($_POST['text']);
+
+	if(update_tasks($conn, $id, $text)){
+		return;
+	}
+	else echo "Произошла непредвиденная ошибка!";
+}

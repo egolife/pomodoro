@@ -29,6 +29,10 @@
 	.ui-timepicker-rtl dl { text-align: right; padding: 0 5px 0 0; }
 	.ui-timepicker-rtl dl dt{ float: right; clear: right; }
 	.ui-timepicker-rtl dl dd { margin: 0 45% 10px 10px; }
+	.glyphicon-ok:hover{
+		color: #5cb85c;
+		font-weight: bold;
+	}
 	</style>
 	<!-- For html5 tags support in old IE -->
 	<!--[if lt IE 9]>

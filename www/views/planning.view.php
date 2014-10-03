@@ -26,7 +26,8 @@
 					<tr>
 						<td class="l-type-col">
 
-							<select type="text" class="form-control" id="typeInput" name="type" placeholder="Enter type">
+							<select form="newNode" type="text" class="form-control" id="typeInput" name="type" placeholder="Enter type">
+								<option value="0">Тип задачи</option>
 								<option value="1">epixx</option>
 								<option value="2">webdev</option>
 								<option value="3">work</option>
@@ -36,9 +37,9 @@
 							</select>
 						</td>
 
-						<td class="l-activity-col"><input required autofocus type="text" name="activity" class="form-control" id="activityInput" placeholder="Enter activity"></td>
-						<td class="l-estimate-col"><input required type="number" name="estimate" class="form-control" id="estimateInput" placeholder="Enter estimate time"></td>
-						<td class="text-center"><button type="submit" class="btn btn-success">Добавить</button></td>
+						<td class="l-activity-col"><input form="newNode" required autofocus type="text" name="activity" class="form-control" id="activityInput" placeholder="Enter activity"></td>
+						<td class="l-estimate-col"><input form="newNode" required type="number" name="estimate" class="form-control" id="estimateInput" placeholder="Enter estimate time"></td>
+						<td class="text-center"><button form="newNode" type="submit" class="btn btn-success">Добавить</button></td>
 						<td class="text-center">&nbsp;</td>
 						<td class="text-center">&nbsp;</td>
 					</tr>
@@ -50,7 +51,11 @@
 								<?php echo $task['name'] . "&nbsp;" ?>
 								<?= $task['is_freezed'] ? "<span class='label label-info'>FREEZED</span>" : null ?>
 							</td>
-							<td class="task_text"><?php echo $task['task']; ?></td>
+							<td class="task_text">
+								<span class="inner_text"><?php echo $task['task']; ?></span>
+								<a href="#" class="textUpdate"><span class="glyphicon glyphicon-pencil"></span></a>
+								<a href="#" class="taskDelete"><span class="glyphicon glyphicon-remove"></span></a>
+							</td>
 							<td><?php echo $task['pomodoros']; ?></td>
 							<td class="text-center">
 								<input type="checkbox" value="<?php echo  "{$task['id']}";?>" id="<?php echo  "task{$task['id']}";?>" name="<?php echo  "task{$task['id']}";?>">

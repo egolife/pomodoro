@@ -165,6 +165,53 @@ var onEvent = {
 				$("#done_modal").modal("hide");
 			}
 		});
+	},
+	update_text: function(e){
+		
+		e.preventDefault();
+		var that = $(this);
+
+		task = that.closest("tr").data("taskid");
+		var innerText = that.siblings(".inner_text").text();
+		var td = that.closest("td");
+		var width = td.width() - that.width() - 10;
+		td.empty();
+
+		$("<input/>").css("width", width).val(innerText).appendTo(td);
+		$("<a href='#' class='textSend'> <span class='glyphicon glyphicon-ok'></span></a>").appendTo(td);
+
+	},
+	update_text_on_server: function(e){
+		e.preventDefault();
+
+		var text = $(this).closest("td").find("input").val();
+		var td = $(this).closest("td");
+		var str = '';
+		$.post("db_updates.php", {"update_task":task, "text":text}, function(data){
+			if(data) console.log(data);
+			else{
+				str += '<span class="inner_text">' + text + '</span> ';
+				str += '<a href="#" class="textUpdate"><span class="glyphicon glyphicon-pencil"></span></a>';
+				td.html(str);
+				flashMessage("Текст задачи " + task + " успешно изменен");
+			}
+
+		});
+	},
+	delete_task: function(e){
+		e.preventDefault();
+		tr = $(this).closest("tr");
+		task = tr.data("taskid");
+		var confirmed = confirm("Точно удаляем запись №" + task + "?");
+		if(!confirmed) return;
+
+		$.post("db_updates.php", {"delete_task":task}, function(data){
+			if(data) console.log(data);
+			else{
+				tr.remove();
+				flashMessage("Задача №" + task + " успешно удалена!");
+			}
+		});
 	}
 
 };
@@ -178,6 +225,9 @@ $(document).on("submit", "#newTodayTask", onEvent.new_today_task); //элеме�
 $(document).on("change", "#archive_tasks", onEvent.toggle_visibility_archived); //показть скрыть архивные задачи
 $(document).on("click", ".freeze_toggle", onEvent.toggle_archive_property); //отправить в архив, вынуть из архива
 $(document).on("click", ".done_earlier", onEvent.set_complete_date); //отметить как выполненное ранее
+$(document).on("click", ".textUpdate", onEvent.update_text); //Преобразовать текст в Input val=text
+$(document).on("click", ".taskDelete", onEvent.delete_task); //Удаляем задачу
+$(document).on("click", ".textSend", onEvent.update_text_on_server); //Отправить изменения на сервер
 $(document).on("show.bs.modal", "#done_modal", function(e){
 	task = $(e.relatedTarget).closest("tr").data("taskid");
 }); //отметить как выполненное ранее

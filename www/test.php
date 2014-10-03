@@ -29,8 +29,9 @@
 		<input type="range" min=100 max=200 placeholder="Range field">
 		<textarea name="" id="" cols="30" rows="10" placeholder="Long Happy Life"></textarea>
 		<select name="" id="">
+			<option value="">Default</option>
 			<option value="">Option 1</option>
-			<option value="" selected>Option 2 Default</option>
+			<option value="">Option 2 Default</option>
 			<option value="">Option 3</option>
 		</select>
 		<label for=""><input type="checkbox"> Просто Checkbox</label>

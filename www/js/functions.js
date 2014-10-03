@@ -52,7 +52,10 @@ function generate_new_row(obj){
 
 	var str = "<tr " + "data-taskid='" + obj.id + "'>";
 	str += "<td>" + obj.name + "&nbsp;</td>";
-	str += "<td>" + obj.task + "</td>";
+	str += "<td class='task_text'><span class='inner_text'>" + obj.task + "</span>";
+	str += "<a href='#' class='textUpdate'> <span class='glyphicon glyphicon-pencil'></span></a>";
+	str += "<a href='#' class='taskDelete'> <span class='glyphicon glyphicon-remove'></span></a>";
+	str += "</td>";
 	str += "<td>" + obj.pomodoros + "</td>";
 	str += "<td class='text-center'>" + "<input type='checkbox' checked value='" + obj.id + "' form='selectionForm' id='task";
 	str += obj.id + "' name='task" + obj.id + "'>" + "</td>";
@@ -66,10 +69,15 @@ function generate_new_row(obj){
 }
 
 /**
- * Незаконченная функция - должна приводить любую форму в исходное состояние
- * (сейчас только input и textarea)
+ * Приводит форму в исходное состояние
  * @param  {jQuery} $form коллекция (объект) jQuery с формой
  */
 function empty_form($form){
-	$form.find("input, textarea").not("[type=submit]").val("").end().find("select").unset();
+	var id = $form.attr("id");
+	var items = $("body").find("[form=" + id + "]");
+
+	$form.find("input, textarea").removeAttr("checked").not("[type=submit]").val("");
+	$form.find("select").val(0);
+	items.filter("input, textarea").removeAttr("checked").not("[type=submit]").val("");
+	items.filter("select").val(0);
 }

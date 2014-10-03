@@ -24,6 +24,26 @@ function query($query, $bindings, $conn){
 
 }
 
+function update_tasks($conn, $id, $text){
+
+	$query = query('UPDATE tasks SET task = :task WHERE id = :id LIMIT 1',
+				array('id' => $id, 'task' => $text),
+				$conn);
+
+	if ($query) return true;
+	return false;
+}
+
+function delete_tasks($conn, $id){
+
+	$query = query('DELETE FROM tasks WHERE id = :id LIMIT 1',
+				array('id' => $id),
+				$conn);
+
+	if ($query) return true;
+	return false;
+}
+
 function move_progress($table, $conn, $id){
 
 	$query = query('update tasks set progress = if(progress, progress + 1, 1) 
