@@ -192,6 +192,7 @@ var onEvent = {
 			else{
 				str += '<span class="inner_text">' + text + '</span> ';
 				str += '<a href="#" class="textUpdate"><span class="glyphicon glyphicon-pencil"></span></a>';
+				str += '<a href="#" class="taskDelete"> <span class="glyphicon glyphicon-remove"></span></a>';
 				td.html(str);
 				flashMessage("Текст задачи " + task + " успешно изменен");
 			}
