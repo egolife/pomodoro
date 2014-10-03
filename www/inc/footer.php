@@ -8,11 +8,13 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<script src="js/frameworks/jquery-ui-1.10.4.custom.min.js"></script>
 	<script src="js/frameworks/datapicker.rus.js"></script>
+	<script src="js/frameworks/timepicker.js"></script>
 
 	<!-- Bootstrap -->
 	<script src="../js/bootstrap/bootstrap.min.js"></script>
 
 	<!-- Main -->
+	<script src="../js/functions.js"></script>
 	<script src="../js/main.js"></script>
 
 	<!-- Metrika scripts -->

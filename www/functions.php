@@ -37,13 +37,14 @@ function move_progress($table, $conn, $id){
 
 }
 
-function complete_task($table, $conn, $id){
+function complete_task($table, $conn, $id, $complete_date = null){
 
-	$query = query('update tasks set complete_date = NOW() 
+	$date = $complete_date ? date('Y-m-d', $complete_date) : "NOW()";
+	// dd($date);
+	$query = query('update tasks set complete_date = :date 
 		where complete_date is NULL and id = :id',
-				array('id' => $id),
+				array('id' => $id, 'date' => $date),
 				$conn);
-
 	if ($query) return true;
 
 	return false;

@@ -20,8 +20,10 @@ if($_POST['progress']){
 
 if($_POST['complete']){
 	$id = htmlentities($_POST['complete']);
-
-	if(complete_task('tasks', $conn, $id)) return;
+	if($_POST['date']) {
+		$date = (integer)$_POST['date'];
+	}
+	if(complete_task('tasks', $conn, $id, $date)) return;
 	else echo "Данное задание выполнено ранее!";
 }
 

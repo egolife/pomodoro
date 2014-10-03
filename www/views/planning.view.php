@@ -17,6 +17,7 @@
 					<th>Estimated time</th>
 					<th class="text-center">Add to plan</th>
 					<th class="text-center">freeze</th>
+					<th class="text-center">complete</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -39,18 +40,17 @@
 						<td class="l-estimate-col"><input required type="number" name="estimate" class="form-control" id="estimateInput" placeholder="Enter estimate time"></td>
 						<td class="text-center"><button type="submit" class="btn btn-success">Добавить</button></td>
 						<td class="text-center">&nbsp;</td>
+						<td class="text-center">&nbsp;</td>
 					</tr>
 				</form>
-
 				<form action="create_today_plan.php" role="form" id="selectionForm" method="post">
 					<?php foreach($tasks as $task) : ?>
 						<tr <?= "data-taskid='".$task['id']."'" ?>>
 							<td>
 								<?php echo $task['name'] . "&nbsp;" ?>
 								<?= $task['is_freezed'] ? "<span class='label label-info'>FREEZED</span>" : null ?>
-
 							</td>
-							<td><?php echo $task['task']; ?></td>
+							<td class="task_text"><?php echo $task['task']; ?></td>
 							<td><?php echo $task['pomodoros']; ?></td>
 							<td class="text-center">
 								<input type="checkbox" value="<?php echo  "{$task['id']}";?>" id="<?php echo  "task{$task['id']}";?>" name="<?php echo  "task{$task['id']}";?>">
@@ -60,12 +60,13 @@
 									<?= $task['is_freezed'] ? "restore" : "freeze" ?>
 								</a>
 							</td>
+							<td class="text-center"><a data-toggle="modal" data-target="#done_modal" href="#">done</a></td>
 						</tr>
 					<?php endforeach; ?>
 				</form>
 
 				<tr>
-					<td colspan="5" class="text-center">
+					<td colspan="6" class="text-center">
 						<button type="submit" form="selectionForm" class="btn btn-primary btn-lg">
 							Составить план
 						</button>
@@ -76,5 +77,31 @@
 		</table>
 	</div>
 </section>
+
+<!-- Modal -->
+<div class="modal fade" id="done_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">When task was completed?</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" action="/" role="form">
+      	  <div class="form-group">
+      	    <label for="done_date" class="col-sm-3 control-label">Done date</label>
+      	    <div class="col-sm-9">
+      	      <input class="datepicker form-control" type="text" placeholder="31.10.2014" name="done_date" id="done_date">
+      	    </div>
+      	  </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary done_earlier">Complete task</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <?php require '/inc/footer.php'; ?>

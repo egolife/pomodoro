@@ -3,61 +3,32 @@
 * Main js functionality
 * ---------------------------------------------------------------------------------------------------------------------------------------
 */
-
-
-function generate_new_row(obj){
-
-	var str = "<tr " + "data-taskid='" + obj.id + "'>";
-	str += "<td>" + obj.name + "&nbsp;</td>";
-	str += "<td>" + obj.task + "</td>";
-	str += "<td>" + obj.pomodoros + "</td>";
-	str += "<td class='text-center'>" + "<input type='checkbox' checked value='" + obj.id + "' form='selectionForm' id='task";
-	str += obj.id + "' name='task" + obj.id + "'>" + "</td>";
-	str += "<td class='text-center'>" + "<a class='freeze_toggle' href='#'>freeze</a>" + "</td>";
-	str += "</tr>";
-
-	return $(str);
-}
-
-
+var task;
 var onEvent = {
 
 	/*  отправляет на сервер запрос на добавление задания в общий список */
 	new_task : function(e){
-
+		
+		var that = $(this); //Cashed form
 		e.preventDefault();
-
-		var data = $( this ).serialize();
+		var data = that.serialize();
 
 		$.post("new_record.php", data, function(data){
-
 			var data = $.parseJSON(data);
-
-			var message = "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>";
-			message += "&times;</button>";
-			message += "<strong>Все ок! </strong>";
-			message += data.status;
-
-			$("body").prepend("<div class='alert alert-success alert-dismissable'></div>")
-			.find(".alert-dismissable").hide().append(message).slideDown(400).delay(4000).slideUp(400, function(){
-				$(this).remove();
-			});
-
+			flashMessage(data.status);
+			empty_form(that);
 			var newTask = generate_new_row(data.inserted_row[0]);
 			$("#newNode").next("tr").after(newTask);
-			
 		});	
 	},
 	/* Оправляет на сервер список дел для составления плана на сегодня (сейчас на стр planning.php) */
 	new_plan : function(e){
 
 		e.preventDefault();
-
 		var data = $( this ).serialize();
-
-		if(data === "") alert("Вы не выбрали ни одной задачи!");
-
-		else{
+		if(data === "") {
+			alert("Вы не выбрали ни одной задачи!");
+		} else{
 			$.post("create_today_plan.php", data, function(data){
 				alert(data);
 				document.location = "/";
@@ -181,7 +152,21 @@ var onEvent = {
 				}
 			});
 		}
+	},
+	set_complete_date: function(e){
+		e.preventDefault();
+		var tmp = $(this).closest(".modal-content").find(".datepicker").datepicker("getDate");
+		$.post("db_updates.php", {"complete" : task, "date" : +tmp / 1000}, function(data){
+			if(!data){
+				var row = $("table").find("tr[data-taskid=" + task + "]");
+				var taskText = row.find(".task_text").text();
+				row.remove();
+				flashMessage("Задание № " + task + ": \"" + taskText + "\" отмечено как Выполненное!");
+				$("#done_modal").modal("hide");
+			}
+		});
 	}
+
 };
 
 
@@ -192,10 +177,17 @@ $(document).on("click", ".completeBtn", onEvent.complete_task); //элемент
 $(document).on("submit", "#newTodayTask", onEvent.new_today_task); //элемент на главной (time.dev), План на сегодня
 $(document).on("change", "#archive_tasks", onEvent.toggle_visibility_archived); //показть скрыть архивные задачи
 $(document).on("click", ".freeze_toggle", onEvent.toggle_archive_property); //отправить в архив, вынуть из архива
+$(document).on("click", ".done_earlier", onEvent.set_complete_date); //отметить как выполненное ранее
+$(document).on("show.bs.modal", "#done_modal", function(e){
+	task = $(e.relatedTarget).closest("tr").data("taskid");
+}); //отметить как выполненное ранее
 
 
 $(document).ready(function(){
-
+	var yesterday = new Date(new Date() - 1000 * 24 * 3600);
 	$(".datepicker").datepicker($.datepicker.regional["ru"]);  // Датапикер сейчас используется только в today.php - не нужен
-
+	var rowCount = $("table").find("tr").length - 3;
+	$("<span/>").text(rowCount).addClass("label label-info pull-right").appendTo("h1");
+	$("#done_date").val(formatDate(yesterday));
 });
+
