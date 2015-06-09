@@ -25,5 +25,6 @@ $id_of_today_tasks = explode(", ", $tasks["tasks"]);;
 $today_tasks = get_rows_by_id($id_of_today_tasks, $conn);
 
 $data['today_tasks'] = $today_tasks;
+$data['total_estimated'] = get_total_estimate($today_tasks); 
 
 view('index', $data);

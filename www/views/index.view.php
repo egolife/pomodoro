@@ -78,7 +78,8 @@
 	<div class="toolbar">
 		<div class="btn-group">
 			<a href="/planning.php" class="btn btn-default">К планированию</a>
-			<a href="#" class="btn btn-default">за сегодня: <?= $today_tomatoes ?> помидоров</a>
+			<a href="#" class="btn btn-default">план на сегодня:  <?= $total_estimated ?> помидоров</a>
+			<a href="#" class="btn btn-default">выполнено: <?= $today_tomatoes ?> помидоров</a>
 		</div>
 	</div>
 

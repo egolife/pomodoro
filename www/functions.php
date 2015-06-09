@@ -249,6 +249,15 @@ function get_today_tomatoes($conn) {
 	return $res['tomatos'];
 }
 
+function get_total_estimate(Array $db_res) {
+	$sum = 0;
+  foreach ($db_res as $val) {
+  	$sum += $val['pomodoros'];
+  }
+  
+	return $sum;
+}
+
 
 /**
 * ---------------------------------------------------------------------------------------------------------------------------------------
