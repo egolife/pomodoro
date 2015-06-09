@@ -44,6 +44,18 @@ function delete_tasks($conn, $id){
 	return false;
 }
 
+function get_current_date_id($conn) {
+	$current_date = query(
+		"SELECT * FROM days WHERE day = :today LIMIT 1",
+		array('today' => date('Ymd')),
+		$conn
+	);
+
+	$current_date = $current_date->fetch();
+
+	return (int)$current_date['id'];
+}
+
 function move_progress($table, $conn, $id){
 
 	$query = query('update tasks set progress = if(progress, progress + 1, 1) 
@@ -51,10 +63,29 @@ function move_progress($table, $conn, $id){
 				array('id' => $id),
 				$conn);
 
-	if ($query) return true;
+	$current_date_id = get_current_date_id($conn);
+	$query_new = query(
+		'UPDATE days_have_tasks SET tomatos = if(tomatos, tomatos + 1, 1) WHERE tasks_id = :id AND days_id = :day',
+
+		array('id' => $id, 'day' => $current_date_id),
+		$conn
+	);
+
+	if ($query && $query_new) return true;
 
 	return false;
+}
 
+function add_new_today_task($conn, $task_id) {
+	$current_date_id = get_current_date_id($conn);
+
+	$rest = query(
+		"INSERT INTO days_have_tasks (days_id, tasks_id) VALUES (:day, :task)",
+		array('day' => $current_date_id, 'task' => $task_id),
+		$conn
+	);
+	
+	return $rest;
 }
 
 function complete_task($table, $conn, $id, $complete_date = null){
@@ -208,6 +239,14 @@ function htmlentities_ru($str){
 
 function date_ru($datetime){
 	return date_format(date_create($datetime), 'd-m-Y H:i:s');
+}
+
+function get_today_tomatoes($conn) {
+	$current_date = date('Ymd');
+	$query = "SELECT sum(tomatos) tomatos FROM days_have_tasks dht INNER JOIN days d ON dht.days_id=d.id WHERE d.day = {$current_date}";
+	$res = query($query, array(), $conn)->fetch();
+	
+	return $res['tomatos'];
 }
 
 

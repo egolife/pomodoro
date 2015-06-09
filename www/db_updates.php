@@ -28,10 +28,10 @@ if($_POST['complete']){
 }
 
 if($_POST['extraTask']){
-	$id = htmlentities($_POST['extraTask']);
-	$id = ", ".$id;
+	$id = (int)$_POST['extraTask'];
+	$concat_id = ", ".$id;
 
-	if(concat_today_tasks($conn, $id, date("Ymd"))) return;
+	if( concat_today_tasks($conn, $concat_id, date("Ymd")) && add_new_today_task($conn, $id) ) return;
 	else echo "Произошла непредвиденная ошибка!";
 }
 

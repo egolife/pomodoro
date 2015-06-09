@@ -10,6 +10,8 @@ if (!conn) die('Problem connecting to the db.');
 
 $data_for_today = get_by_date("days", $conn, date("Ymd"));
 
+$data['today_tomatoes'] = get_today_tomatoes($conn);
+
 if(!$data_for_today){
 	header("Location: planning.php");
 }

@@ -89,7 +89,7 @@ var onEvent = {
 			message += data.status;
 
 			var tmp = "";
-			tmp += "<tr>";
+			tmp += "<tr data-taskid='" + data.id + "'>";
 			tmp += "<td class='typeCell'>" + $("#typeInput").find("option[value='"+$("#typeInput").val()+"']").text() + "</td>";
 			tmp += "<td class='taskCell'>" + $("#activityInput").val() + "</td>";
 			tmp += "<td class='estimateCell'><img src='/img/tomato.png' alt='помидорка'> x " 
@@ -100,6 +100,11 @@ var onEvent = {
 			tmp += "</tr>";
 
 			$.post("db_updates.php", "extraTask="+data.id, function(data){
+
+				if( $.trim(data) ){
+					alert('Произошла непредвиденная ошибка, попробуй еще раз!');
+					return;
+				}
 
 				$("#newTodayTask").before(tmp);
 
@@ -213,6 +218,47 @@ var onEvent = {
 				flashMessage("Задача №" + task + " успешно удалена!");
 			}
 		});
+	},
+
+	update_today_task: function(e){
+		e.preventDefault();
+		onEvent.restore_today_task_text();
+
+		var $td = $(this).closest('td');
+		var curr_text = $.trim($td.text());
+		$td.data("saved_text", curr_text);
+		var width = $td.width() - $(this).width() - 10;
+		$td.empty();
+
+		task = $td.closest("tr").data('taskid');
+
+		$("<textarea/>").css("width", width).val(curr_text).appendTo($td);
+		$("<a href='#' class='today_task_new_text'> <span class='glyphicon glyphicon-ok'></span></a>").appendTo($td);
+	},
+
+	save_today_task_new_text: function(e){
+		e.preventDefault();
+
+		var text = $(this).closest("td").find("textarea").val();
+		task = $(this).closest('tr').data('taskid');
+
+		$.post("db_updates.php", {"update_task":task, "text":text}, function(data){
+			if(data) console.log(data);
+			else{
+				onEvent.restore_today_task_text(text);
+				flashMessage("Текст задачи " + task + " успешно изменен");
+			}
+
+		});
+	}, 
+	restore_today_task_text: function(provided_text){
+
+		var text;
+
+		$(".taskCell").find("textarea").each(function(i, el){
+			text = provided_text || $(this).closest('td').data('saved_text');
+			$(this).closest('td').empty().html(text + " <a href='#' class='update-today-task'><i class='glyphicon glyphicon-pencil'></i></a>");
+		});
 	}
 
 };
@@ -232,6 +278,8 @@ $(document).on("click", ".textSend", onEvent.update_text_on_server); //Отпр�
 $(document).on("show.bs.modal", "#done_modal", function(e){
 	task = $(e.relatedTarget).closest("tr").data("taskid");
 }); //отметить как выполненное ранее
+$(document).on("click", ".update-today-task", onEvent.update_today_task); //Преобразовать текст в Input val=text
+$(document).on("click", ".today_task_new_text", onEvent.save_today_task_new_text); //Преобразовать текст в Input val=text
 
 
 $(document).ready(function(){

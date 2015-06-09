@@ -1,0 +1,34 @@
+AddDefaultCharset utf-8
+
+ErrorDocument 404 /error
+
+#php.ini variables surpress
+php_value error_reporting -1
+php_flag  log_errors off
+php_value error_log  ../PHP_errors.log
+php_flag ignore_repeated_errors on
+php_flag ignore_repeated_source on
+php_value log_errors_max_len 0
+
+#Show on screen
+php_flag display_startup_errors on
+php_flag display_errors on
+php_flag html_errors on
+
+#close log file from requesting
+<Files PHP_errors.log>
+Order allow,deny
+Deny from all
+Satisfy All
+</Files>
+
+Options -MultiViews
+RewriteEngine On
+
+RewriteBase /
+
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]

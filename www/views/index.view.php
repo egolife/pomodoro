@@ -20,10 +20,10 @@
 				
 				<!-- <form action="create_today_plan.php" role="form" id="selectionForm" method="post"> -->
 					<?php foreach($today_tasks as $task) : ?>
-						<tr class="<?php if ($task['complete_date']) echo 'success';?>" >
+						<tr class="<?php if ($task['complete_date']) echo 'success';?>" data-taskid="<?= $task['id'] ?>">
 							<td class="typeCell"><?php echo $task['name']; ?></td>
 							<td class="taskCell" id="task<?php echo $task['id']; ?>">
-								<?php echo $task['task']; ?>
+								<?php echo $task['task']; ?> <a href="#" class="update-today-task"><i class="glyphicon glyphicon-pencil"></i></a>
 							</td>
 							<td class="estimateCell">
 								<img src='/img/tomato.png' alt='помидорка'> x <?php echo $task['pomodoros'];?>
@@ -73,6 +73,13 @@
 
 			</tbody>
 		</table>
+	</div>
+
+	<div class="toolbar">
+		<div class="btn-group">
+			<a href="/planning.php" class="btn btn-default">К планированию</a>
+			<a href="#" class="btn btn-default">за сегодня: <?= $today_tomatoes ?> помидоров</a>
+		</div>
 	</div>
 
 </section>
